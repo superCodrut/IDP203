@@ -1,0 +1,11 @@
+Pentru exercițiile următoare, veți porni de la această arhivă, care conține o aplicație simplă NodeJS.
+Pornind de la cele două fișiere din arhivă, scrieți un Dockerfile care va crea o imagine urmărind pașii de mai jos:
+se va porni de la cea mai recentă versiune a imaginii oficiale de NodeJS, adică node:15.11.0-stretch
+se va copia fișierul package.json din arhivă în directorul curent (./); acest fișier are rolul de a specifica dependențele aplicației NodeJS (de exemplu, framework-ul Express.js)
+se va rula comanda npm install pentru a instala dependețele din fișierul de la pasul precedent
+se va copia sursa server.js în directorul de lucru /usr/src/app/
+se va expune portul 8080
+în final, se va menționa comanda de rulare a aplicației; astfel, se va rula fișierul /usr/src/app/server.js cu binarul node.
+
+
+
