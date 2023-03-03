@@ -6,7 +6,7 @@ COPY lab01/requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
  
 COPY lab01/app.py /usr/src/app/
-COPY teb01/mplates/index.html /usr/src/app/templates/
+COPY lab01/templates/index.html /usr/src/app/templates/
  
 EXPOSE 5000
  
