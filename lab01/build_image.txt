@@ -7,5 +7,26 @@ se va copia sursa server.js în directorul de lucru /usr/src/app/
 se va expune portul 8080
 în final, se va menționa comanda de rulare a aplicației; astfel, se va rula fișierul /usr/src/app/server.js cu binarul node.
 
+Dockerfile
+FROM node:latest
 
+COPY package.json ./
+
+RUN npm install package.json
+
+COPY server.js /usr/src/app/
+
+EXPOSE 8080
+
+CMD ["/usr/src/app/server.js", "node"]
+
+
+#Folosiți Dockerfile-ul scris anterior pentru a crea o imagine numita nodejstest.
+
+docker build -t nodejstest2023 .
+
+
+#Porniți un container care să ruleze imaginea nodejstest pe portul 12345 în modul detașat (daemon). Verificați că funcționează corect intrând pe http://127.0.0.1:12345.
+
+docker container run -it -d -p 12345:8080  nodejstest2023:latest
 
