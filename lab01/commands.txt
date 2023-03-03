@@ -1,0 +1,67 @@
+#Aduceți în cache-ul local imaginea busybox din registrul oficial Docker.
+docker image pull busybox
+
+
+#Rulați un container de busybox care să execute comanda uptime.
+docker container run busybox uptime
+
+
+# Rulați un container interactiv de busybox. Odată ce ați intrat în el, executați comanda wget google.com, apoi ieșiți.
+docker container run -it busybox 
+/ # 
+/ # wget google.com
+Connecting to google.com (142.251.208.110:80)
+Connecting to www.google.com (142.251.39.68:80)
+saving to 'index.html'
+index.html           100% |*******************************************************************************************************************************************************************| 15323  0:00:00 ETA
+'index.html' saved
+/ # exit
+
+
+
+#Rulați un container interactiv detașat (daemon) de busybox. Odată ce l-ați pornit, atașați-vă la el și dați comanda id, apoi ieșiți.
+docker container run -it -d busybox
+00b5a832bd355ac2c32a45b8bfe2273d701aa40623d525a2a6d5b6fc50c492a3
+codrut94@codrut94-Lenovo-ideapad-330S-14IKB:~/Desktop/Facultate_2022_2023/Sem2/IDP/lab01$ docker attach 00b5a832bd355ac2c32a45b8bfe2273d701aa40623d525a2a6d5b6fc50c492a3
+/ # 
+/ # 
+/ # id
+uid=0(root) gid=0(root) groups=10(wheel)
+/ # exit
+
+
+
+#Ștergeți toate containerele și imaginile create la punctele precedente.
+docker container ls -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS                          PORTS     NAMES
+00b5a832bd35   busybox   "sh"                     40 seconds ago       Exited (0) 23 seconds ago                 relaxed_keller
+3dda7bd25455   busybox   "sh"                     About a minute ago   Exited (0) About a minute ago             gallant_thompson
+449cd625da17   busybox   "-it"                    About a minute ago   Created                                   sweet_ganguly
+85bb2a476f6b   busybox   "uptime"                 2 minutes ago        Exited (0) 2 minutes ago                  admiring_pare
+6bd5021c9424   busybox   "sh"                     3 minutes ago        Exited (0) 3 minutes ago                  zealous_pascal
+9786288d6e86   busybox   "sh"                     4 minutes ago        Exited (0) 4 minutes ago                  angry_hofstadter
+3212537a458a   alpine    "/bin/sh"                7 minutes ago        Up 7 minutes                              ping88
+0793183d7df5   alpine    "sh -c 'ping 8.8.8.8…"   9 minutes ago        Up 9 minutes                              ping8
+011e69380047   alpine    "/bin/sh"                36 minutes ago       Up 36 minutes        
+
+docker container stop 00b5a832bd35  3dda7bd25455  449cd625da17  85bb2a476f6b  6bd5021c9424  9786288d6e86
+00b5a832bd35
+3dda7bd25455
+449cd625da17
+85bb2a476f6b
+6bd5021c9424
+9786288d6e86
+codrut94@codrut94-Lenovo-ideapad-330S-14IKB:~/Desktop/Facultate_2022_2023/Sem2/IDP/lab01$ docker container rm  00b5a832bd35  3dda7bd25455  449cd625da17  85bb2a476f6b  6bd5021c9424  9786288d6e86
+00b5a832bd35
+3dda7bd25455
+449cd625da17
+85bb2a476f6b
+6bd5021c9424
+9786288d6e86
+codrut94@codrut94-Lenovo-ideapad-330S-14IKB:~/Desktop/Facultate_2022_2023/Sem2/IDP/lab01$ docker image ls
+REPOSITORY          TAG       IMAGE ID       CREATED             SIZE
+codrut94/idp_2023   exemplu   e4e288674998   About an hour ago   106MB
+alpine              latest    b2aa39c304c2   2 weeks ago         7.05MB
+alpine              edge      15be990c4c28   3 weeks ago         7.05MB
+busybox             latest    66ba00ad3de8   8 weeks ago         4.87MB
+
