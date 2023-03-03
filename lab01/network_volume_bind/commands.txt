@@ -1,0 +1,61 @@
+Pentru exercițiile următoare, veți porni de la această arhivă, care conține o aplicație NodeJS care realizează un API de adăugare de cărți într-o bibliotecă peste o bază de date PostgreSQL. Exercițiile de mai jos vă trec prin pașii necesari pentru a rula un container pentru o bază de date PostgreSQL și containerul cu aplicația în aceeași rețea, având persistență la oprirea containerelor.o
+
+
+Pe baza surselor și a fișierului Dockerfile din arhiva de laborator, construiți o imagine cu numele (tag-ul) api-laborator-1-image.
+
+
+
+Creați o rețea bridge numită laborator1-db-network.
+
+
+
+
+Creați un volum numit laborator1-db-persistent-volume.
+
+
+
+
+Porniți în background un container pentru o bază de date cu următoarele caracteristici:
+se va atașa un bind mount care va face o mapare între fișierul init-db.sql de pe mașina locală (acesta va fi sursa la flag-ul de bind mount și se găsește în arhiva de laborator) și fișierul /docker-entrypoint-initdb.d/init-db.sql din containerul care se va rula (acesta va fi destinația)
+se va atașa volumul laborator1-db-persistent-volume creat anterior (sursa) la calea /var/lib/postgresql/data din containerul care se va rula (destinația)
+se va rula containerul în rețeaua laborator1-db-network creată anterior
+se vor specifica următoarele variabile de mediu (într-o comandă de docker run, acest se lucru se face astfel: docker run -e NUME=valoare):
+variabila POSTGRES_USER cu valoare admin
+variabila POSTGRES_PASSWORD cu valoarea admin
+variabila POSTGRES_DB cu valoarea books
+containerul rulat se va numi laborator1-db
+se va rula imaginea postgres din registrul oficial.
+
+
+
+
+
+Porniți în background un container cu imaginea api-laborator-1-image creată anterior, cu următoarele caracteristici:
+se va rula containerul în rețeaua laborator1-db-network creată anterior
+se vor specifica următoarele variabile de mediu:
+variabila PGUSER cu valoare admin
+variabila PGPASSWORD cu valoarea admin
+variabila PGDATABASE cu valoarea books
+variabila PGHOST cu valoarea laborator1-db
+variabila PGPORT cu valoarea 5432
+containerul rulat se va numi laborator1-api
+containerul va expune portul 80 și îl va mapa la portul 5555 de pe mașina locală.
+
+
+
+
+
+
+Verificați că cele două containere rulează corect și au conectivitate:
+folosind Postman sau orice altă aplicație similară, realizați cereri de GET și POST pe http://localhost:5555/api/books (pentru un tutorial de Postman, puteți intra aici)
+la cererile de POST, se așteaptă un body JSON cu formatul {"title":"titlu","author":"autor"}
+cererile de GET vor returna o listă de cărți adăugate prin cereri de POST.
+Verificați că volumul pe care l-ați adăugat păstrează persistența datelor:
+opriți și ștergeți cele două containere
+reporniți cele două containere cu aceleași comenzi ca anterior
+trimiteți o cerere de GET
+dacă ați configurat corect, veți primi o listă cu cărțile adăugate anterior.
+
+
+
+
