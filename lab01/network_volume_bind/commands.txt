@@ -2,16 +2,17 @@ Pentru exercițiile următoare, veți porni de la această arhivă, care conțin
 
 
 Pe baza surselor și a fișierului Dockerfile din arhiva de laborator, construiți o imagine cu numele (tag-ul) api-laborator-1-image.
+docker build -t api-laborator-1-image2023 .
 
 
 
 Creați o rețea bridge numită laborator1-db-network.
-
+docker network create -d bridge laborator1-db-network2023
 
 
 
 Creați un volum numit laborator1-db-persistent-volume.
-
+docker volume create laborator1-db-persistent-volume2023
 
 
 
@@ -25,7 +26,7 @@ variabila POSTGRES_PASSWORD cu valoarea admin
 variabila POSTGRES_DB cu valoarea books
 containerul rulat se va numi laborator1-db
 se va rula imaginea postgres din registrul oficial.
-
+docker container run -d --mount source=init-db.sql,target=/docker-entrypoint-initdb.d/  -v laborator1-db-persistent-volume2023:/var/lib/postgresql/data --network=laborator1-db-network2023 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=books --name laborator1-db2023 postgres
 
 
 
@@ -40,8 +41,7 @@ variabila PGHOST cu valoarea laborator1-db
 variabila PGPORT cu valoarea 5432
 containerul rulat se va numi laborator1-api
 containerul va expune portul 80 și îl va mapa la portul 5555 de pe mașina locală.
-
-
+docker container run -d  --mount type=bind,source="$(pwd)"/sql/,target=/docker-entrypoint-initdb.d/  -v laborator1-db-persistent-volume2023:/var/lib/postgresql/data --network=laborator1-db-network2023 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=books --name laborator1-db2023     postgres
 
 
 
@@ -50,12 +50,16 @@ Verificați că cele două containere rulează corect și au conectivitate:
 folosind Postman sau orice altă aplicație similară, realizați cereri de GET și POST pe http://localhost:5555/api/books (pentru un tutorial de Postman, puteți intra aici)
 la cererile de POST, se așteaptă un body JSON cu formatul {"title":"titlu","author":"autor"}
 cererile de GET vor returna o listă de cărți adăugate prin cereri de POST.
+functioneaza cu postman, dar trebuie sa sterg din volumul de db tot ce e in _data.
+
+
 Verificați că volumul pe care l-ați adăugat păstrează persistența datelor:
 opriți și ștergeți cele două containere
 reporniți cele două containere cu aceleași comenzi ca anterior
 trimiteți o cerere de GET
 dacă ați configurat corect, veți primi o listă cu cărțile adăugate anterior.
 
+all good.
 
 
 
